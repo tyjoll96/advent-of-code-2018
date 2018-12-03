@@ -18,6 +18,9 @@ fn main() {
     // Iterate over the lines in the file.
     for line in f.lines() {
         // Add them to the inputs vector.
-        inputs.push(line.unwrap());
+        inputs.push(line.unwrap().trim().to_string());
+    }
+
+    for input in &inputs {
     }
 }
