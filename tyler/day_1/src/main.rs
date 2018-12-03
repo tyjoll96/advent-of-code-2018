@@ -1,3 +1,4 @@
+use std::collections::BTreeSet;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
@@ -8,7 +9,7 @@ fn main() {
     let filename = "input.txt".to_string(); // Filename to read data from.
     let mut frequency: i32 = 0; // "Frequency" to be changed by input.
     let mut inputs: Vec<i32> = Vec::new(); // Vector of inputs taken from the input file.
-    let mut prev_frequencies: Vec<i32> = Vec::new(); // Vector to hold previous frequency values.
+    let mut prev_frequencies: BTreeSet<i32> = BTreeSet::new(); // Vector to hold previous frequency values.
 
     // Declare debug variables.
     let mut iteration = 1;
@@ -29,7 +30,7 @@ fn main() {
     while !done {
         println!("Iteration: {}", iteration);
         // Iterate over the inputs.
-        for input in inputs.iter() {
+        for input in &inputs {
             // Modify the frequency with the current input.
             frequency += input;
 
@@ -46,7 +47,7 @@ fn main() {
             }
 
             // Add the new frequency to the list of previously seen frequencies.
-            prev_frequencies.push(frequency);
+            prev_frequencies.insert(frequency);
         }
 
         iteration += 1;
