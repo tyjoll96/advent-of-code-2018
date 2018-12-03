@@ -27,9 +27,10 @@ fn main() {
         inputs.push(line.unwrap().trim().to_string());
     }
 
+    // Iterate over the IDs given.
     for input in &inputs {
+        // Create an empty vector to hold the occurrences for the current input.
         let mut occurrences: Vec<Occurrence> = Vec::new();
-        // let mut q: () = occurrences;
 
         // Iterate over the characters of the string.
         for character in input.chars() {
@@ -90,6 +91,6 @@ fn main() {
         // println!();
     }
 
-    // Print result.
+    // Print checksum of IDs.
     println!("2: {}, 3: {}, Checksum: {}", num_two_letter_ids, num_three_letter_ids, num_two_letter_ids * num_three_letter_ids);
 }
