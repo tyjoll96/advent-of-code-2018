@@ -1,6 +1,4 @@
-use std::fs::File;
-use std::io::BufReader;
-use std::io::prelude::*;
+extern crate adventofcode;
 
 fn main() {
     // Class to hold number of times a letter has occurred.
@@ -10,21 +8,14 @@ fn main() {
     }
 
     // Declare variables.
-    let filename = "input.txt".to_string(); // Filename to read data from.
     let mut inputs: Vec<String> = Vec::new(); // Vector of inputs taken from the input file.
     let mut num_three_letter_ids: i16 = 0; // Counter for IDs that contain three of a letter.
     let mut num_two_letter_ids: i16 = 0; // Counter for IDs that contain two of a letter.
 
-    // Open the file.
-    let f = File::open(filename).expect("File not found.");
-
-    // Create a BufReader from the file.
-    let f = BufReader::new(f);
-
     // Iterate over the lines in the file.
-    for line in f.lines() {
+    for line in adventofcode::read_input_file(2).lines() {
         // Add them to the inputs vector.
-        inputs.push(line.unwrap().trim().to_string());
+        inputs.push(line.trim().to_string());
     }
 
     // Iterate over the IDs given.
@@ -96,7 +87,7 @@ fn combined_similar_id(inputs: &Vec<String>) -> String {
         // Iterate over the input for the right side of the comparison.
         for y in 0..inputs.len() {
             // Don't compare an ID to itself.
-            if (x == y) { continue; }
+            if x == y { continue; }
             let mut differences: u8 = 0; // Number of different characters in ID.
             let mut final_id: String = String::new(); // Letter that is different between the IDs.
 
@@ -106,7 +97,7 @@ fn combined_similar_id(inputs: &Vec<String>) -> String {
             let mut id_y_chars = inputs[y].chars();
 
             // Iterate over the letters in the ID. Luckily all IDs are the same length so we don't need to worry about our counter too much.
-            for letter in inputs[x].chars().enumerate() {
+            for _letter in inputs[x].chars().enumerate() {
                 // Get the current character being iterated over on both sides.
                 let id_x_char = id_x_chars.next().unwrap();
                 let id_y_char = id_y_chars.next().unwrap();
