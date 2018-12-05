@@ -57,18 +57,12 @@ fn main() {
             }
         }
 
-        // Debug.
-        // print!("{} occurrences: ", input);
-
         // Flags for if an occurence has happened more than once.
         let mut has_two_occurred = false;
         let mut has_three_occurred = false;
 
         // Iterate over the occurrences.
         for occurrence in occurrences {
-            // Debug.
-            // print!("{}:{} ", occurrence.letter, occurrence.num);
-
             // Check if a letter has occurred two times.
             if occurrence.num == 2 && !has_two_occurred {
                 // Increment the two letter counter.
@@ -86,11 +80,54 @@ fn main() {
                 has_three_occurred = true;
             }
         }
-
-        // Debug.
-        // println!();
     }
 
     // Print checksum of IDs.
     println!("2: {}, 3: {}, Checksum: {}", num_two_letter_ids, num_three_letter_ids, num_two_letter_ids * num_three_letter_ids);
+
+    // Print the combined similar ID.
+    println!("{}", combined_similar_id(&inputs));
+}
+
+// Find two IDs that vary by only one letter difference and return a combined string with the mismatch character removed.
+fn combined_similar_id(inputs: &Vec<String>) -> String {
+    // Iterate over the inputs for the left side of the comparison.
+    for x in 0..inputs.len() {
+        // Iterate over the input for the right side of the comparison.
+        for y in 0..inputs.len() {
+            // Don't compare an ID to itself.
+            if (x == y) { continue; }
+            let mut differences: u8 = 0; // Number of different characters in ID.
+            let mut final_id: String = String::new(); // Letter that is different between the IDs.
+
+            // Get the chars within the left side ID.
+            let mut id_x_chars = inputs[x].chars();
+            // Get the chars within the right side ID.
+            let mut id_y_chars = inputs[y].chars();
+
+            // Iterate over the letters in the ID. Luckily all IDs are the same length so we don't need to worry about our counter too much.
+            for letter in inputs[x].chars().enumerate() {
+                // Get the current character being iterated over on both sides.
+                let id_x_char = id_x_chars.next().unwrap();
+                let id_y_char = id_y_chars.next().unwrap();
+
+                // Check if the characters are the same.
+                if id_x_char != id_y_char {
+                    // Iterate the difference counter.
+                    differences += 1;
+                } else {
+                    // Add the matching characters to the final ID to be returned at the end.
+                    final_id.push(id_x_char);
+                }
+            }
+
+            // Check if the difference is 1, luckily no IDs matched exactly so that check was left out.
+            if differences < 2 {
+                return final_id;
+            }
+        }
+    }
+
+    // Output that no valid output was found from the input.
+    "No similar ID combination found. :(".to_string()
 }
