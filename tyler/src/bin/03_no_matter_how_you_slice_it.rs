@@ -26,7 +26,7 @@ impl IsOn for FabricPlan {
     }
 }
 
-fn find_overlapping_area(input: String) -> String {
+fn get_plans_from_input(input: String) -> String {
     // Create an empty vector for fabric plans.
     let mut fabric_plans: Vec<FabricPlan> = Vec::new();
 
@@ -45,6 +45,10 @@ fn find_overlapping_area(input: String) -> String {
         });
     }
 
+    fabric_plans
+}
+
+fn find_overlapping_area(fabric_plans: Vec<FabricPlan>) -> String {
     // Area covered by two or more elf plans.
     let mut area_covered = 0;
 
@@ -82,7 +86,12 @@ fn find_overlapping_area(input: String) -> String {
     area_covered.to_string() 
 }
 
+fn find_unique_plan(input: String) -> String {
+
+}
+
 fn main() {
     let input = adventofcode::read_input_file(3);
-    println!("{}", find_overlapping_area(input));
+    let fabric_plans = get_plans_from_input(input);
+    println!("{}", find_overlapping_area(fabric_plans));
 }
