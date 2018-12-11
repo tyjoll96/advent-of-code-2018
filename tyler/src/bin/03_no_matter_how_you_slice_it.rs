@@ -86,12 +86,13 @@ fn find_overlapping_area(fabric_plans: Vec<FabricPlan>) -> String {
     area_covered.to_string() 
 }
 
-fn find_unique_plan(input: String) -> String {
+fn find_unique_plan(fabric_plans: Vec<FabricPlan>) -> String {
 
 }
 
 fn main() {
     let input = adventofcode::read_input_file(3);
     let fabric_plans = get_plans_from_input(input);
-    println!("{}", find_overlapping_area(fabric_plans));
+    // println!("{}", find_overlapping_area(fabric_plans));
+    println!("{}", find_unique_plan(fabric_plans));
 }
