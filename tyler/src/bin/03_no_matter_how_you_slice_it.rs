@@ -7,6 +7,11 @@ trait IsOn {
     fn is_on(&self, coord_x: u16, coord_y: u16) -> bool;
 }
 
+trait Overlaps {
+    fn overlaps(&self, coord_x: u16, coord_y: u16, width: u16, height: u16) -> bool;
+}
+
+#[derive(Copy, Clone)]
 struct FabricPlan {
     id: u16,
     indent_x: u16,
@@ -26,7 +31,21 @@ impl IsOn for FabricPlan {
     }
 }
 
-fn get_plans_from_input(input: String) -> String {
+impl Overlaps for FabricPlan {
+    fn overlaps(&self, coord_x: u16, coord_y: u16, width: u16, height: u16) -> bool {
+        for x in coord_x..coord_x + width {
+            for y in coord_y..coord_y + height {
+                if self.is_on(x, y) {
+                    return true;
+                }
+            }
+        }
+
+        false
+    }
+}
+
+fn get_plans_from_input(input: String) -> Vec<FabricPlan> {
     // Create an empty vector for fabric plans.
     let mut fabric_plans: Vec<FabricPlan> = Vec::new();
 
@@ -88,6 +107,33 @@ fn find_overlapping_area(fabric_plans: Vec<FabricPlan>) -> String {
 
 fn find_unique_plan(fabric_plans: Vec<FabricPlan>) -> String {
 
+    for i in 0..fabric_plans.len() {
+        let mut overlap: bool = false;
+        for oi in 0..fabric_plans.len() {
+            if oi == i { continue; }
+            if fabric_plans[oi].overlaps(
+                fabric_plans[i].indent_x,
+                fabric_plans[i].indent_y,
+                fabric_plans[i].width,
+                fabric_plans[i].height,
+            ) {
+                overlap = true;
+            }
+        }
+        if !overlap {
+            return fabric_plans[i].id.to_string();
+        }
+    }
+
+    "Nothing".to_string()
+
+    // if non_overlapping_plans.len() > 1 {
+    //     println!("Number of plans not overlapping: {}", non_overlapping_plans.len());
+    // } else {
+    //     return non_overlapping_plans[0].id.to_string();
+    // }
+
+    // "Something went wrong, we have more than one unique plan!".to_string()
 }
 
 fn main() {
