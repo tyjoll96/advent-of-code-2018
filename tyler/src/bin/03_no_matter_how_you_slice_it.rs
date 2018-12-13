@@ -7,6 +7,11 @@ trait IsOn {
     fn is_on(&self, coord_x: u16, coord_y: u16) -> bool;
 }
 
+trait Overlaps {
+    fn overlaps(&self, coord_x: u16, coord_y: u16, width: u16, height: u16) -> bool;
+}
+
+#[derive(Copy, Clone)]
 struct FabricPlan {
     id: u16,
     indent_x: u16,
@@ -26,7 +31,21 @@ impl IsOn for FabricPlan {
     }
 }
 
-fn find_overlapping_area(input: String) -> String {
+impl Overlaps for FabricPlan {
+    fn overlaps(&self, coord_x: u16, coord_y: u16, width: u16, height: u16) -> bool {
+        for x in coord_x..coord_x + width {
+            for y in coord_y..coord_y + height {
+                if self.is_on(x, y) {
+                    return true;
+                }
+            }
+        }
+
+        false
+    }
+}
+
+fn get_plans_from_input(input: String) -> Vec<FabricPlan> {
     // Create an empty vector for fabric plans.
     let mut fabric_plans: Vec<FabricPlan> = Vec::new();
 
@@ -45,6 +64,10 @@ fn find_overlapping_area(input: String) -> String {
         });
     }
 
+    fabric_plans
+}
+
+fn find_overlapping_area(fabric_plans: Vec<FabricPlan>) -> String {
     // Area covered by two or more elf plans.
     let mut area_covered = 0;
 
@@ -82,7 +105,43 @@ fn find_overlapping_area(input: String) -> String {
     area_covered.to_string() 
 }
 
+fn find_unique_plan(fabric_plans: Vec<FabricPlan>) -> String {
+    // Iterate over all the plans.
+    for i in 0..fabric_plans.len() {
+        // Create a flag for if the fabric plan overlaps with another.
+        let mut overlap: bool = false;
+
+        // Iterate over all the plans again.
+        for oi in 0..fabric_plans.len() {
+            // Don't check if a fabric plan overlaps with itself.
+            if oi == i { continue; }
+
+            // Check if the fabric plan overlaps.
+            if fabric_plans[oi].overlaps(
+                fabric_plans[i].indent_x,
+                fabric_plans[i].indent_y,
+                fabric_plans[i].width,
+                fabric_plans[i].height,
+            ) {
+                // Update the flag.
+                overlap = true;
+            }
+        }
+
+        // Check if the flag has not been raised.
+        if !overlap {
+            // Return the non overlapping fabric plan.
+            return fabric_plans[i].id.to_string();
+        }
+    }
+
+    // Default return if no plans match.
+    "Nothing".to_string()
+}
+
 fn main() {
     let input = adventofcode::read_input_file(3);
-    println!("{}", find_overlapping_area(input));
+    let fabric_plans = get_plans_from_input(input);
+    // println!("{}", find_overlapping_area(fabric_plans));
+    println!("{}", find_unique_plan(fabric_plans));
 }
