@@ -106,34 +106,37 @@ fn find_overlapping_area(fabric_plans: Vec<FabricPlan>) -> String {
 }
 
 fn find_unique_plan(fabric_plans: Vec<FabricPlan>) -> String {
-
+    // Iterate over all the plans.
     for i in 0..fabric_plans.len() {
+        // Create a flag for if the fabric plan overlaps with another.
         let mut overlap: bool = false;
+
+        // Iterate over all the plans again.
         for oi in 0..fabric_plans.len() {
+            // Don't check if a fabric plan overlaps with itself.
             if oi == i { continue; }
+
+            // Check if the fabric plan overlaps.
             if fabric_plans[oi].overlaps(
                 fabric_plans[i].indent_x,
                 fabric_plans[i].indent_y,
                 fabric_plans[i].width,
                 fabric_plans[i].height,
             ) {
+                // Update the flag.
                 overlap = true;
             }
         }
+
+        // Check if the flag has not been raised.
         if !overlap {
+            // Return the non overlapping fabric plan.
             return fabric_plans[i].id.to_string();
         }
     }
 
+    // Default return if no plans match.
     "Nothing".to_string()
-
-    // if non_overlapping_plans.len() > 1 {
-    //     println!("Number of plans not overlapping: {}", non_overlapping_plans.len());
-    // } else {
-    //     return non_overlapping_plans[0].id.to_string();
-    // }
-
-    // "Something went wrong, we have more than one unique plan!".to_string()
 }
 
 fn main() {
