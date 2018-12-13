@@ -67,7 +67,7 @@ fn get_plans_from_input(input: String) -> Vec<FabricPlan> {
     fabric_plans
 }
 
-fn find_overlapping_area(fabric_plans: Vec<FabricPlan>) -> String {
+fn find_overlapping_area(fabric_plans: &Vec<FabricPlan>) -> String {
     // Area covered by two or more elf plans.
     let mut area_covered = 0;
 
@@ -105,7 +105,7 @@ fn find_overlapping_area(fabric_plans: Vec<FabricPlan>) -> String {
     area_covered.to_string() 
 }
 
-fn find_unique_plan(fabric_plans: Vec<FabricPlan>) -> String {
+fn find_unique_plan(fabric_plans: &Vec<FabricPlan>) -> String {
     // Iterate over all the plans.
     for i in 0..fabric_plans.len() {
         // Create a flag for if the fabric plan overlaps with another.
@@ -142,6 +142,6 @@ fn find_unique_plan(fabric_plans: Vec<FabricPlan>) -> String {
 fn main() {
     let input = adventofcode::read_input_file(3);
     let fabric_plans = get_plans_from_input(input);
-    // println!("{}", find_overlapping_area(fabric_plans));
-    println!("{}", find_unique_plan(fabric_plans));
+    println!("{}", find_overlapping_area(&fabric_plans));
+    println!("{}", find_unique_plan(&fabric_plans));
 }
